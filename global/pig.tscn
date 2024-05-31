@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://sounds/click.wav" type="AudioStream" id=1]
+[ext_resource path="res://sounds/hit.wav" type="AudioStream" id=2]
+[ext_resource path="res://sounds/pig-cries.wav" type="AudioStream" id=3]
+[ext_resource path="res://global/cerdo.gd" type="Script" id=4]
+[ext_resource path="res://images/cerdito.png" type="Texture" id=5]
+
+[sub_resource type="PhysicsMaterial" id=1]
+bounce = 0.5
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 17.0
+height = 6.0
+
+[node name="cerdo" type="RigidBody2D"]
+position = Vector2( 719, 59 )
+collision_mask = 6
+physics_material_override = SubResource( 1 )
+contacts_reported = 1
+contact_monitor = true
+angular_damp = -0.2
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="image" type="Sprite" parent="."]
+texture = ExtResource( 5 )
+region_rect = Rect2( 0, 0, 40, 40 )
+
+[node name="shape" type="CollisionShape2D" parent="."]
+position = Vector2( 1, 1 )
+rotation = 1.5708
+shape = SubResource( 2 )
+
+[node name="ouch" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+volume_db = 4.0
+
+[node name="click" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
+volume_db = 12.0
+
+[node name="onscreen" type="VisibilityNotifier2D" parent="."]
+
+[node name="fade" type="Tween" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_cerdo_body_entered"]
+[connection signal="input_event" from="." to="." method="_on_cerdo_input_event"]
+[connection signal="finished" from="ouch" to="." method="_on_ouch_finished"]
+[connection signal="screen_exited" from="onscreen" to="." method="_on_onscreen_screen_exited"]
+[connection signal="tween_completed" from="fade" to="." method="_on_fade_tween_completed"]

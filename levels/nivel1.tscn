@@ -1,0 +1,125 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://global/letras.tres" type="Theme" id=1]
+[ext_resource path="res://main.gd" type="Script" id=2]
+[ext_resource path="res://images/tower1.jpg" type="Texture" id=3]
+[ext_resource path="res://images/barril.png" type="Texture" id=4]
+[ext_resource path="res://images/flecha.png" type="Texture" id=5]
+[ext_resource path="res://sounds/cancion.mp3" type="AudioStream" id=6]
+[ext_resource path="res://images/regla.png" type="Texture" id=7]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 30, 4.5 )
+
+[sub_resource type="PhysicsMaterial" id=7]
+absorbent = true
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 29.5, 34 )
+
+[node name="nivel1" type="Node2D"]
+pause_mode = 1
+script = ExtResource( 2 )
+
+[node name="torre" type="Sprite" parent="."]
+scale = Vector2( 0.64, 0.666667 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="regla" type="Sprite" parent="."]
+position = Vector2( 640, 327 )
+scale = Vector2( 1.4, 1.4 )
+texture = ExtResource( 7 )
+
+[node name="flecha" type="Sprite" parent="."]
+position = Vector2( 518, 320 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 5 )
+
+[node name="timer" type="Timer" parent="."]
+wait_time = 60.0
+autostart = true
+
+[node name="level" type="Label" parent="."]
+margin_left = 60.0
+margin_top = 19.0
+margin_right = 338.0
+margin_bottom = 95.0
+theme = ExtResource( 1 )
+text = "level = 1	"
+
+[node name="score" type="Label" parent="."]
+margin_left = 61.0
+margin_top = 105.0
+margin_right = 339.0
+margin_bottom = 181.0
+theme = ExtResource( 1 )
+text = "score = 0"
+
+[node name="aviso" type="Label" parent="."]
+margin_left = 59.0
+margin_top = 190.0
+margin_right = 507.0
+margin_bottom = 266.0
+theme = ExtResource( 1 )
+text = "tiempo real"
+
+[node name="reto" type="Label" parent="."]
+margin_left = 58.0
+margin_top = 284.0
+margin_right = 336.0
+margin_bottom = 360.0
+theme = ExtResource( 1 )
+text = "tiempo reto"
+
+[node name="time" type="Label" parent="."]
+margin_left = 60.0
+margin_top = 504.0
+margin_right = 338.0
+margin_bottom = 580.0
+theme = ExtResource( 1 )
+text = "Time: 0"
+
+[node name="piso" type="RigidBody2D" parent="."]
+position = Vector2( 690, 300 )
+collision_layer = 2
+mode = 1
+contacts_reported = 1
+contact_monitor = true
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="shape" type="CollisionShape2D" parent="piso"]
+position = Vector2( 30, 4.5 )
+shape = SubResource( 3 )
+
+[node name="box" type="ColorRect" parent="piso"]
+margin_right = 60.0
+margin_bottom = 9.0
+rect_pivot_offset = Vector2( 30, 4.5 )
+rect_clip_content = true
+color = Color( 0.298039, 0.0509804, 0.0509804, 1 )
+
+[node name="barril" type="RigidBody2D" parent="."]
+position = Vector2( 898, 566 )
+collision_layer = 4
+mode = 1
+physics_material_override = SubResource( 7 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="image" type="Sprite" parent="barril"]
+texture = ExtResource( 4 )
+
+[node name="shape" type="CollisionShape2D" parent="barril"]
+position = Vector2( -1.5, -1 )
+shape = SubResource( 8 )
+
+[node name="music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = -14.0
+autoplay = true
+
+[connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]
